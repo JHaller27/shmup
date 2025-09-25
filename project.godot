@@ -51,7 +51,6 @@ player_fire={
 
 2d_physics/layer_1="UNASSIGNED"
 2d_physics/layer_2="Actors"
-2d_physics/layer_3="Weapons"
 
 [rendering]
 

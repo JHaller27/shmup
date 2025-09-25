@@ -10,34 +10,26 @@ public partial class Player : Sprite2D
 	private float TurnRadius = 10;
 
 	[Export]
-	private double FireRate = 2;
+	private ProjectileEmitter ProjectileEmitter;
 
-	[Export]
-	private PackedScene Ammo;
-
-	private double TimeSinceLastFire;
+	private bool IsAlive = true;
 
 	public override void _PhysicsProcess(double delta)
 	{
+		if (!this.IsAlive) return;
+
 		this.Rotation += Mathf.DegToRad(Input.GetAxis("player_left", "player_right"));
 		this.GlobalPosition += Vector2.Up.Rotated(this.Rotation) * (float)(this.Speed * delta);
 
-		this.TimeSinceLastFire = Math.Min(this.TimeSinceLastFire + delta, 1 / this.FireRate);
-
-		while (Input.IsActionPressed("player_fire") && this.TimeSinceLastFire >= (1 / this.FireRate))
+		while (Input.IsActionPressed("player_fire") && this.ProjectileEmitter.CanFire())
 		{
-			Bullet bullet = this.Ammo.Instantiate<Bullet>();
-			bullet.ExcludedColliders.Add(this.GetNode<Hitbox>("%ActorCollision"));
-			this.GetParent().AddChild(bullet);
-			bullet.GlobalPosition = this.GlobalPosition;
-			bullet.Rotation = this.Rotation;
-
-			this.TimeSinceLastFire -= 1 / this.FireRate;
+			this.ProjectileEmitter.EmitProjectile();
 		}
 	}
 
-	private void _OnHit(Projectile weaponCollider)
+	private void _on_health_health_depleted()
 	{
 		this.Modulate = Colors.Red;
+		this.IsAlive = false;
 	}
 }

@@ -1,19 +1,38 @@
-[gd_scene load_steps=6 format=3 uid="uid://b1uqcx8oijw3x"]
+[gd_scene load_steps=8 format=3 uid="uid://b1uqcx8oijw3x"]
 
 [ext_resource type="Script" uid="uid://ch7m8j27pohgc" path="res://actors/player/Player.cs" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://bx4vkclj4r5ci" path="res://assets/ships_packed.png" id="1_onrkg"]
-[ext_resource type="PackedScene" uid="uid://bkfvh26eqd8dy" path="res://actors/bullet/bullet.tscn" id="3_hqtel"]
+[ext_resource type="PackedScene" uid="uid://b82j21wbmhbfr" path="res://actors/bullet/bullet.tscn" id="3_hqtel"]
+[ext_resource type="PackedScene" uid="uid://baxqd02w61csy" path="res://components/projectile/projectile_emitter.tscn" id="4_6p1w3"]
 [ext_resource type="PackedScene" uid="uid://d0hcnupuvu1uc" path="res://components/hitbox/hitbox.tscn" id="4_hqtel"]
+[ext_resource type="PackedScene" uid="uid://d4de87qo0veke" path="res://components/health/health.tscn" id="6_15y17"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sh265"]
 atlas = ExtResource("1_onrkg")
 region = Rect2(0, 32, 32, 32)
 
-[node name="Player" type="Sprite2D" groups=["Allies"]]
+[node name="Player" type="Sprite2D" node_paths=PackedStringArray("ProjectileEmitter") groups=["Allies"]]
 texture = SubResource("AtlasTexture_sh265")
 script = ExtResource("1_4flbx")
 Speed = 50.0
-Ammo = ExtResource("3_hqtel")
+ProjectileEmitter = NodePath("ProjectileEmitter")
+
+[node name="ProjectileEmitter" parent="." node_paths=PackedStringArray("ExcludedHitboxes") instance=ExtResource("4_6p1w3")]
+position = Vector2(0, -10)
+ProjectileScene = ExtResource("3_hqtel")
+ExcludedHitboxes = [NodePath("../Hitbox")]
 
 [node name="Hitbox" parent="." instance=ExtResource("4_hqtel")]
 unique_name_in_owner = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox"]
+polygon = PackedVector2Array(-9, -1, -9, -5, 9, -5, 9, -1, 1, -1, 1, 7, -1, 7, -1, -1)
+
+[node name="Health" parent="." node_paths=PackedStringArray("Hitbox") instance=ExtResource("6_15y17")]
+offset_left = -12.0
+offset_top = 11.0
+offset_right = 12.0
+offset_bottom = 15.0
+Hitbox = NodePath("../Hitbox")
+
+[connection signal="HealthDepleted" from="Health" to="." method="_on_health_health_depleted"]

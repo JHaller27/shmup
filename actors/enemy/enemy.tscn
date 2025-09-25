@@ -1,16 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://dmx1nindhvuxd"]
+[gd_scene load_steps=8 format=3 uid="uid://dmx1nindhvuxd"]
 
 [ext_resource type="Texture2D" uid="uid://bx4vkclj4r5ci" path="res://assets/ships_packed.png" id="1_7k104"]
 [ext_resource type="Script" uid="uid://dlyebm4je4b8q" path="res://actors/enemy/Enemy.cs" id="2_4gyqm"]
+[ext_resource type="PackedScene" uid="uid://baxqd02w61csy" path="res://components/projectile/projectile_emitter.tscn" id="3_ooidh"]
 [ext_resource type="PackedScene" uid="uid://d0hcnupuvu1uc" path="res://components/hitbox/hitbox.tscn" id="3_qi2p4"]
+[ext_resource type="PackedScene" uid="uid://b82j21wbmhbfr" path="res://actors/bullet/bullet.tscn" id="4_bnhc7"]
+[ext_resource type="PackedScene" uid="uid://d4de87qo0veke" path="res://components/health/health.tscn" id="6_u81vx"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4gyqm"]
 atlas = ExtResource("1_7k104")
 region = Rect2(0, 128, 32, 32)
 
-[node name="Enemy" type="Sprite2D" groups=["Enemies"]]
+[node name="Enemy" type="Sprite2D" node_paths=PackedStringArray("ProjectileEmitter") groups=["Enemies"]]
 texture = SubResource("AtlasTexture_4gyqm")
 script = ExtResource("2_4gyqm")
+ProjectileEmitter = NodePath("ProjectileEmitter")
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 unique_name_in_owner = true
@@ -20,8 +24,22 @@ collision_mask = 2
 collide_with_areas = true
 collide_with_bodies = false
 
+[node name="ProjectileEmitter" parent="." node_paths=PackedStringArray("ExcludedHitboxes") instance=ExtResource("3_ooidh")]
+position = Vector2(0, -10)
+ProjectileScene = ExtResource("4_bnhc7")
+ExcludedHitboxes = [NodePath("../Hitbox")]
+
 [node name="Hitbox" parent="." instance=ExtResource("3_qi2p4")]
 unique_name_in_owner = true
 
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Hitbox"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox"]
 polygon = PackedVector2Array(-9, -5, 9, -5, 9, -1, 1, -1, 1, 7, -1, 7, -1, -1, -9, -1)
+
+[node name="Health" parent="." node_paths=PackedStringArray("Hitbox") instance=ExtResource("6_u81vx")]
+offset_left = -12.0
+offset_top = 11.0
+offset_right = 12.0
+offset_bottom = 15.0
+Hitbox = NodePath("../Hitbox")
+
+[connection signal="HealthDepleted" from="Health" to="." method="_on_health_health_depleted"]

@@ -11,12 +11,7 @@ public partial class Enemy : Sprite2D
 	private float TurnRadius = 10;
 
 	[Export]
-	private double FireRate = 2;
-
-	[Export]
-	private PackedScene Ammo;
-
-	private double TimeSinceLastFire;
+	private ProjectileEmitter ProjectileEmitter;
 
 	private Node2D CurrentTarget;
 
@@ -45,17 +40,9 @@ public partial class Enemy : Sprite2D
 
 		this.GlobalPosition += Vector2.Up.Rotated(this.Rotation) * (float)(this.Speed * delta);
 
-		this.TimeSinceLastFire = Math.Min(this.TimeSinceLastFire + delta, 1 / this.FireRate);
-
-		while (this.RayCast2D.IsColliding() && this.TimeSinceLastFire >= (1 / this.FireRate))
+		while (this.RayCast2D.IsColliding() && this.ProjectileEmitter.CanFire())
 		{
-			Bullet bullet = this.Ammo.Instantiate<Bullet>();
-			bullet.ExcludedColliders.Add(this.GetNode<Hitbox>("%ActorCollision"));
-			this.GetParent().AddChild(bullet);
-			bullet.GlobalPosition = this.GlobalPosition;
-			bullet.Rotation = this.Rotation;
-
-			this.TimeSinceLastFire -= 1 / this.FireRate;
+			this.ProjectileEmitter.EmitProjectile();
 		}
 	}
 
@@ -64,8 +51,13 @@ public partial class Enemy : Sprite2D
 		this.CurrentTarget = this.GetTree().GetNodesInGroup(Constants.Groups.ALLIES).MinBy(n => this.GlobalPosition - (n as Node2D).GlobalPosition) as Node2D ?? this.CurrentTarget;
 	}
 
-	private void _OnHit(Projectile weaponCollider)
+	private void _OnHit(Projectile projectile)
 	{
 		this.Modulate = Colors.Purple;
+	}
+
+	private void _on_health_health_depleted()
+	{
+		this.QueueFree();
 	}
 }

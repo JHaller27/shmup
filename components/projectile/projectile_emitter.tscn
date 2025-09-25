@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://baxqd02w61csy"]
+
+[ext_resource type="Script" uid="uid://jdphwls6q6aa" path="res://components/projectile/ProjectileEmitter.cs" id="1_qkmt1"]
+
+[node name="ProjectileEmitter" type="Marker2D"]
+gizmo_extents = 20.0
+script = ExtResource("1_qkmt1")
