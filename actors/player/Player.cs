@@ -27,7 +27,7 @@ public partial class Player : Sprite2D
 		while (Input.IsActionPressed("player_fire") && this.TimeSinceLastFire >= (1 / this.FireRate))
 		{
 			Bullet bullet = this.Ammo.Instantiate<Bullet>();
-			bullet.ExcludedColliders.Add(this.GetNode<ActorCollision>("%ActorCollision"));
+			bullet.ExcludedColliders.Add(this.GetNode<Hitbox>("%ActorCollision"));
 			this.GetParent().AddChild(bullet);
 			bullet.GlobalPosition = this.GlobalPosition;
 			bullet.Rotation = this.Rotation;
@@ -36,7 +36,7 @@ public partial class Player : Sprite2D
 		}
 	}
 
-	private void _OnHit(WeaponCollider weaponCollider)
+	private void _OnHit(Projectile weaponCollider)
 	{
 		this.Modulate = Colors.Red;
 	}

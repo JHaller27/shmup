@@ -50,7 +50,7 @@ public partial class Enemy : Sprite2D
 		while (this.RayCast2D.IsColliding() && this.TimeSinceLastFire >= (1 / this.FireRate))
 		{
 			Bullet bullet = this.Ammo.Instantiate<Bullet>();
-			bullet.ExcludedColliders.Add(this.GetNode<ActorCollision>("%ActorCollision"));
+			bullet.ExcludedColliders.Add(this.GetNode<Hitbox>("%ActorCollision"));
 			this.GetParent().AddChild(bullet);
 			bullet.GlobalPosition = this.GlobalPosition;
 			bullet.Rotation = this.Rotation;
@@ -64,7 +64,7 @@ public partial class Enemy : Sprite2D
 		this.CurrentTarget = this.GetTree().GetNodesInGroup(Constants.Groups.ALLIES).MinBy(n => this.GlobalPosition - (n as Node2D).GlobalPosition) as Node2D ?? this.CurrentTarget;
 	}
 
-	private void _OnHit(WeaponCollider weaponCollider)
+	private void _OnHit(Projectile weaponCollider)
 	{
 		this.Modulate = Colors.Purple;
 	}

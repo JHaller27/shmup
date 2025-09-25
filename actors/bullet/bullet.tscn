@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=3 uid="uid://bkfvh26eqd8dy"]
+
+[ext_resource type="Texture2D" uid="uid://cm38p0piacepo" path="res://assets/tiles_packed.png" id="1_v7oki"]
+[ext_resource type="Script" uid="uid://re0lcrc03han" path="res://actors/bullet/Bullet.cs" id="2_t4vbm"]
+[ext_resource type="PackedScene" uid="uid://bjghkgr7fm8iu" path="res://components/projectile/projectile.tscn" id="3_t4vbm"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v8qja"]
+atlas = ExtResource("1_v7oki")
+region = Rect2(32, 0, 16, 16)
+
+[node name="Bullet" type="Sprite2D"]
+texture = SubResource("AtlasTexture_v8qja")
+script = ExtResource("2_t4vbm")
+Lifetime = 2.0
+
+[node name="Projectile" parent="." instance=ExtResource("3_t4vbm")]

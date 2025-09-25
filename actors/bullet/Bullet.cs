@@ -9,7 +9,7 @@ public partial class Bullet : Sprite2D
 	[Export]
 	private double Lifetime = 3;
 
-	public HashSet<ActorCollision> ExcludedColliders = new();
+	public HashSet<Hitbox> ExcludedColliders = new();
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -21,7 +21,7 @@ public partial class Bullet : Sprite2D
 		}
 	}
 
-	private void _OnHit(ActorCollision actorCollision)
+	private void _OnHit(Hitbox actorCollision)
 	{
 		if (this.ExcludedColliders.Contains(actorCollision)) return;
 		this.QueueFree();
