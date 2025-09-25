@@ -50,7 +50,8 @@ player_fire={
 [layer_names]
 
 2d_physics/layer_1="UNASSIGNED"
-2d_physics/layer_2="Actors"
+2d_physics/layer_2="Players"
+2d_physics/layer_3="Enemies"
 
 [rendering]
 

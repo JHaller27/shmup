@@ -24,6 +24,7 @@ ExcludedHitboxes = [NodePath("../Hitbox")]
 
 [node name="Hitbox" parent="." instance=ExtResource("4_hqtel")]
 unique_name_in_owner = true
+collision_layer = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox"]
 polygon = PackedVector2Array(-9, -1, -9, -5, 9, -5, 9, -1, 1, -1, 1, 7, -1, 7, -1, -1)
@@ -33,6 +34,8 @@ offset_left = -12.0
 offset_top = 11.0
 offset_right = 12.0
 offset_bottom = 15.0
+max_value = 2.0
+value = 2.0
 Hitbox = NodePath("../Hitbox")
 
 [connection signal="HealthDepleted" from="Health" to="." method="_on_health_health_depleted"]

@@ -31,6 +31,7 @@ ExcludedHitboxes = [NodePath("../Hitbox")]
 
 [node name="Hitbox" parent="." instance=ExtResource("3_qi2p4")]
 unique_name_in_owner = true
+collision_layer = 4
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox"]
 polygon = PackedVector2Array(-9, -5, 9, -5, 9, -1, 1, -1, 1, 7, -1, 7, -1, -1, -9, -1)

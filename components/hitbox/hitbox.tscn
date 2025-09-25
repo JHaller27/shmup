@@ -3,6 +3,6 @@
 [ext_resource type="Script" uid="uid://ba4h3tbj0o1mo" path="res://components/hitbox/Hitbox.cs" id="1_3l28h"]
 
 [node name="Hitbox" type="Area2D"]
-collision_layer = 2
 collision_mask = 0
+monitoring = false
 script = ExtResource("1_3l28h")

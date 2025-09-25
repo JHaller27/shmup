@@ -20,6 +20,8 @@ public partial class Health : ProgressBar
 		if (this.Value <= 0)
 		{
 			this.EmitSignal(SignalName.HealthDepleted);
+			this.Hitbox.SetDeferred("monitorable", false);
+			this.Hitbox.CollisionLayer = 0;
 		}
 	}
 }

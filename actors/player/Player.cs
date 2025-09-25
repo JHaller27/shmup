@@ -12,7 +12,7 @@ public partial class Player : Sprite2D
 	[Export]
 	private ProjectileEmitter ProjectileEmitter;
 
-	private bool IsAlive = true;
+	public bool IsAlive = true;
 
 	public override void _PhysicsProcess(double delta)
 	{

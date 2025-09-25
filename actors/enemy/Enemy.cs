@@ -48,12 +48,10 @@ public partial class Enemy : Sprite2D
 
 	public override void _Process(double delta)
 	{
-		this.CurrentTarget = this.GetTree().GetNodesInGroup(Constants.Groups.ALLIES).MinBy(n => this.GlobalPosition - (n as Node2D).GlobalPosition) as Node2D ?? this.CurrentTarget;
-	}
-
-	private void _OnHit(Projectile projectile)
-	{
-		this.Modulate = Colors.Purple;
+		this.CurrentTarget = this.GetTree().GetNodesInGroup(Constants.Groups.ALLIES)
+			.Cast<Player>()
+			.Where(p => p.IsAlive)
+			.MinBy(p => this.GlobalPosition - p.GlobalPosition);
 	}
 
 	private void _on_health_health_depleted()

@@ -12,7 +12,8 @@ size = Vector2(2, 12)
 
 [node name="Bullet" type="Area2D"]
 collision_layer = 0
-collision_mask = 2
+collision_mask = 6
+monitorable = false
 script = ExtResource("1_bcfer")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
