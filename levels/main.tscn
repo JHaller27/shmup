@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=4 uid="uid://b3dq5yxub73ee"]
+[gd_scene load_steps=8 format=4 uid="uid://b3dq5yxub73ee"]
 
 [ext_resource type="Texture2D" uid="uid://cm38p0piacepo" path="res://assets/tiles_packed.png" id="1_m1504"]
 [ext_resource type="PackedScene" uid="uid://b1uqcx8oijw3x" path="res://actors/player/player.tscn" id="2_ifaiv"]
 [ext_resource type="PackedScene" uid="uid://dmx1nindhvuxd" path="res://actors/enemy/enemy.tscn" id="3_5k4jt"]
+[ext_resource type="Theme" uid="uid://cv4al5nvapuv5" path="res://resources/main_theme.tres" id="4_m1504"]
+[ext_resource type="Script" uid="uid://b5jvinjq8enni" path="res://actors/FuelBar.cs" id="5_ifaiv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0xm2m"]
 texture = ExtResource("1_m1504")
@@ -741,15 +743,17 @@ metadata/_edit_lock_ = true
 [node name="Player" parent="." instance=ExtResource("2_ifaiv")]
 position = Vector2(329, 203)
 rotation = 4.712389
+Speed = 40.0
+BoostFuelCapacity = 2.0
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(2, 2)
+zoom = Vector2(4, 4)
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
 editor_draw_drag_margin = true
 
 [node name="Enemy" parent="." instance=ExtResource("3_5k4jt")]
-position = Vector2(389, 203)
+position = Vector2(447, 203)
 rotation = 4.712389
 
 [node name="Enemy2" parent="." instance=ExtResource("3_5k4jt")]
@@ -757,3 +761,31 @@ position = Vector2(230, 222)
 rotation = 4.712389
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_m1504")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FuelBar" type="ProgressBar" parent="CanvasLayer/Control/MarginContainer" node_paths=PackedStringArray("Player")]
+modulate = Color(0, 1, 1, 1)
+custom_minimum_size = Vector2(40, 600)
+layout_mode = 2
+size_flags_horizontal = 8
+value = 100.0
+fill_mode = 3
+show_percentage = false
+script = ExtResource("5_ifaiv")
+Player = NodePath("../../../../Player")

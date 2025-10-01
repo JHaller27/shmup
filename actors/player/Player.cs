@@ -12,14 +12,38 @@ public partial class Player : Sprite2D
 	[Export]
 	private ProjectileEmitter ProjectileEmitter;
 
+	[Export]
+	public double BoostFuelCapacity { get; private set; } = 100;
+
+	[Export]
+	private double BoostSpeedMult = 1.5f;
+
+	public double BoostFuel { get; private set; }
+
 	public bool IsAlive = true;
+
+	public override void _Ready()
+	{
+		this.BoostFuel = this.BoostFuelCapacity;
+	}
 
 	public override void _PhysicsProcess(double delta)
 	{
 		if (!this.IsAlive) return;
 
+		double speed = this.Speed;
+		if (Input.IsActionPressed("player_boost"))
+		{
+			speed *= this.BoostSpeedMult;
+			this.BoostFuel -= delta;
+		}
+		else if (this.BoostFuel < this.BoostFuelCapacity)
+		{
+			this.BoostFuel = Math.Min(this.BoostFuel + delta, this.BoostFuelCapacity);
+		}
+
 		this.Rotation += Mathf.DegToRad(Input.GetAxis("player_left", "player_right"));
-		this.GlobalPosition += Vector2.Up.Rotated(this.Rotation) * (float)(this.Speed * delta);
+		this.GlobalPosition += Vector2.Up.Rotated(this.Rotation) * (float)(speed * delta);
 
 		while (Input.IsActionPressed("player_fire") && this.ProjectileEmitter.CanFire())
 		{
